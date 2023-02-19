@@ -1,6 +1,7 @@
 local PedCoords = Config.Blips.Processing.coords
 local PedCoords1 = Config.Blips.Seller.coords
 local PedModel = Config.PedModel
+local busy = false
 
 -- Blip
 if Config.UseBlips then
@@ -94,6 +95,8 @@ local function LoadESXVersion()
 
     --Orange Picking Event
     RegisterNetEvent('tr-orangefarm:PickingOranges', function()
+        if busy then return end
+        busy = true
         local Ped = PlayerPedId()
         local time = math.random(Config.Picking.CirlceMinigame.minSeconds, Config.Picking.CirlceMinigame.maxSeconds)
         local circles = math.random(Config.Picking.CirlceMinigame.minCircles, Config.Picking.CirlceMinigame.maxCircles)
@@ -123,12 +126,15 @@ local function LoadESXVersion()
             ESX.ShowNotification(Config.Text["FailedPickingOranges"], "error")
         end
         FreezeEntityPosition(Ped, false)
+        busy = false
     end)
 
     --Processing Event
     RegisterNetEvent('tr-orangefarm:ProcessOrange', function()
+        if busy then return end
         local Ped = PlayerPedId()
         FreezeEntityPosition(Ped, true)
+        busy = true
         if lib.progressCircle({
             duration = Config.Processing.pressingConfig.timer,
             position = 'bottom',
@@ -153,11 +159,14 @@ local function LoadESXVersion()
             ESX.ShowNotification(Config.Text["CancelledProcessing"], "error")
         end
         FreezeEntityPosition(Ped, false)
+        busy = false
     end)
 
     RegisterNetEvent('tr-orangefarm:SellRawOrange', function()
+        if busy then return end
         local Ped = PlayerPedId()
         FreezeEntityPosition(Ped, true)
+        busy = true
         if lib.progressCircle({
             duration = 4000,
             position = 'bottom',
@@ -182,9 +191,12 @@ local function LoadESXVersion()
             ESX.ShowNotification(Config.Text["CancelledProcessing"], "error")
         end
         FreezeEntityPosition(Ped, false)
+        busy = false
     end)
 
     RegisterNetEvent('tr-orangefarm:SellingJuice', function()
+        if busy then return end
+        busy = true
         local Ped = PlayerPedId()
         FreezeEntityPosition(Ped, true)
         if lib.progressCircle({
@@ -211,6 +223,7 @@ local function LoadESXVersion()
             ESX.ShowNotification(Config.Text["CancelledProcessing"], "error")
         end
         FreezeEntityPosition(Ped, false)
+        busy = false
     end)
 end
 
@@ -357,6 +370,8 @@ local function LoadQBVersion()
 
     --Orange Picking Event
     RegisterNetEvent('tr-orangefarm:PickingOranges', function()
+        if busy then return end
+        busy = true
         local Ped = PlayerPedId()
         local time = math.random(Config.Picking.CirlceMinigame.minSeconds, Config.Picking.CirlceMinigame.maxSeconds)
         local circles = math.random(Config.Picking.CirlceMinigame.minCircles, Config.Picking.CirlceMinigame.maxCircles)
@@ -383,13 +398,16 @@ local function LoadQBVersion()
             })
             TriggerServerEvent('tr-orangefarm:GratherOrange')
         else
-            TriggerEvent(Config.Text["FailedPickingOranges"], "error")
+            TriggerEvent("QBCore:Notify", Config.Text["FailedPickingOranges"], "error")
         end
         FreezeEntityPosition(Ped, false)
+        busy = false
     end)
 
     --Processing Event
     RegisterNetEvent('tr-orangefarm:ProcessOrange', function()
+        if busy then return end
+        busy = true
         local Ped = PlayerPedId()
         FreezeEntityPosition(Ped, true)
         if lib.progressCircle({
@@ -413,12 +431,15 @@ local function LoadQBVersion()
         then
             TriggerServerEvent("tr-orangefarm:TradingToOrangeJuice")
         else
-            TriggerEvent(Config.Text["CancelledProcessing"], "error")
+            TriggerEvent("QBCore:Notify", Config.Text["CancelledProcessing"], "error")
         end
         FreezeEntityPosition(Ped, false)
+        busy = false
     end)
 
     RegisterNetEvent('tr-orangefarm:SellRawOrange', function()
+        if busy then return end
+        busy = true
         local Ped = PlayerPedId()
         FreezeEntityPosition(Ped, true)
         if lib.progressCircle({
@@ -442,12 +463,15 @@ local function LoadQBVersion()
         then
             TriggerServerEvent("tr-orangefarm:SellingRawOrange")
         else
-            TriggerEvent(Config.Text["CancelledProcessing"], "error")
+            TriggerEvent("QBCore:Notify", Config.Text["CancelledProcessing"], "error")
         end
         FreezeEntityPosition(Ped, false)
+        busy = false
     end)
 
     RegisterNetEvent('tr-orangefarm:SellingJuice', function()
+        if busy then return end
+        busy = true
         local Ped = PlayerPedId()
         FreezeEntityPosition(Ped, true)
         if lib.progressCircle({
@@ -471,9 +495,10 @@ local function LoadQBVersion()
         then
             TriggerServerEvent("tr-orangefarm:SellingJuices")
         else
-            TriggerEvent(Config.Text["CancelledProcessing"], "error")
+            TriggerEvent("QBCore:Notify", Config.Text["CancelledProcessing"], "error")
         end
         FreezeEntityPosition(Ped, false)
+        busy = false
     end)
 end
 
