@@ -20,7 +20,7 @@ Created By
 - TRClassic
 
 # Support Discord
-https://discord.gg/vTCUWCnQSD
+https://discord.gg/T2xX5WwmEX
 
 # Dependencies (ESX):
 - [CircleMinigame](https://github.com/trclassic92/CircleMinigame) - Converted from qbcore
